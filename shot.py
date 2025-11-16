@@ -6,11 +6,11 @@ from constants import *
 class Shot(CircleShape):
     def __init__(self, x, y):
         super().__init__(x, y, SHOT_RADIUS)
+        self.velocity = pygame.Vector2()
         pass
 
     def draw(self, screen):
-        bullet_color = pygame.Color("white")
-        pygame.draw.circle(screen, bullet_color, self.position, self.radius)
+        pygame.draw.circle(screen, "white", self.position, self.radius, 1)
         pass
 
     def update(self, dt):

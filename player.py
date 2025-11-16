@@ -5,9 +5,11 @@ from shot import *
 
 class Player(CircleShape):
     
-    def __init__(self, x, y):
+    def __init__(self, x, y, shots):
         super().__init__(x,y,PLAYER_RADIUS)
         self.rotation = 0
+        self.shot_cooldown_timer = 0
+        self.shots = shots
 
     def triangle(self):
         forward = pygame.Vector2(0, 1).rotate(self.rotation)
@@ -28,6 +30,7 @@ class Player(CircleShape):
         self.position += forward * PLAYER_MOVE_SPEED * dt
 
     def update(self, dt):
+        self.shot_cooldown_timer -= dt
         keys = pygame.key.get_pressed()
         if keys[pygame.K_a]:
             self.rotate(-1 * dt)
@@ -41,8 +44,11 @@ class Player(CircleShape):
             self.shoot()
 
     def shoot(self):
-        new_bullet = Shot(self.position.x, self.position.y)
-        temp_vec = pygame.Vector2(0,1)
-        temp_vec = temp_vec.rotate(self.rotation)
-        new_bullet.velocity = temp_vec * PLAYER_SHOOT_SPEED
-        # new_bullet.velocity = self.velocity
+        if self.shot_cooldown_timer > 0:
+            return
+        self.shot_cooldown_timer = PLAYER_SHOOT_COOLDOWN_SECONDS
+        shot = Shot(self.position.x, self.position.y)
+        shot.velocity = pygame.Vector2(0, 1).rotate(self.rotation) * PLAYER_SHOOT_SPEED
+        # self.shots.append(shot)
+        # debug
+        # print(f"SHOT SPAWNED at {self.position} vel={shot.velocity}")

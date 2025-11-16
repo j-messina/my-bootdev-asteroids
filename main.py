@@ -14,20 +14,23 @@ def main():
     screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
     dt = 0
     clock_obj = pygame.time.Clock()
-    # player grouping
+
     updatable = pygame.sprite.Group()
     drawable = pygame.sprite.Group()
-    Player.containers = (updatable, drawable)
-    my_player = Player(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2)
-    # asteroid grouping
     asteroids = pygame.sprite.Group()
-    Asteroid.containers = (asteroids, updatable, drawable)
-    # AsteroidField grouping
-    AsteroidField.containers = (updatable)
-    my_asteroid_field = AsteroidField()
-    # Bullet grouping
     shootable = pygame.sprite.Group()
-    Shot.containers = (drawable, updatable, shootable)
+
+    Player.containers = (updatable, drawable)
+    Asteroid.containers = (asteroids, updatable, drawable)
+    AsteroidField.containers = (updatable)
+    Shot.containers = (drawable, updatable)
+    # 11/15/2025 AAHHHH EVERYTHING'S FUCKED BECAUSE OF THIS STUPID LOGGING UPDATE. ITS ALL FUCKED
+    shots = []
+    my_player = Player(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, shots=shots)
+    my_asteroid_field = AsteroidField()
+    
+    
+    
 
 
     # start of game loop
@@ -36,6 +39,13 @@ def main():
             if event.type == pygame.QUIT:
                 return
         pygame.Surface.fill(screen, (1,1,1))
+
+        # in the game loop each frame:
+        # for s in shots:
+        #     s.update(dt)
+        # for s in shots:
+        #     s.draw(screen)
+
         updatable.update(dt)
         for obj in asteroids:
             if my_player.collision_check(obj):

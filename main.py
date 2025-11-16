@@ -3,6 +3,7 @@ from constants import *
 from player import *
 from asteroid import *
 from asteroidfield import *
+from shot import *
 
 def main():
     print("Starting Asteroids!")
@@ -24,6 +25,10 @@ def main():
     # AsteroidField grouping
     AsteroidField.containers = (updatable)
     my_asteroid_field = AsteroidField()
+    # Bullet grouping
+    shootable = pygame.sprite.Group()
+    Shot.containers = (drawable, updatable, shootable)
+
 
     # start of game loop
     while True :
